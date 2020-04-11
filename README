@@ -1,0 +1,20 @@
+Using this project and a LolinD32 board or similar you can realise a wireless MIDI port, in and out. 
+It uses Bluetooth Low Energy and connects directly to your Linux laptop with Bluetooth.
+See the file ESP32MidiControllerInterface.JPG for the simple schematic necessary to interface your MIDI port with your LolinD32.
+
+Upload the sketch to your LolinD32 and execute it. At your Linux PC you now can go to settings and Bluetooth. You should see a device named ESP32MIDI that you can pair with.
+
+In order to get an active midi port on your Ubuntu laptop follow these steps as root user:
+
+  rfcomm connect /dev/rfcomm0 <IP-address-of-your-LolinD32>
+  ttymidi -s /dev/rfcomm0
+
+The ttymidi program connects the /dev/rfcomm0 device to a midi port in and out. Execute 'aconnect -l' to see a list of your current midi devices on your Linux pc.
+The ttymidi program is available at https://github.com/cjbarnes18/ttymidi
+
+If all goes well and you have uploaded the Arduino sketch into your LolinD32 system and activated Bluetooth on your laptop, then you should be able to send a midi file to your external LolinD32 wirelessly. For example: aplaymidi -p 128:1 elise.mid
+This example uses midi port 128 and its output port 1 sending it the midi file elise.mid.
+If you install the execellent MIDI progam rosegarden on your Linux pc then you can find the device in the 'Studio'->'Manage MIDI Devices' section as '128:1 ttymidi' output and '128:0 ttymidi' input. You should be able to also get midi input visible in this program.
+
+I can recommend using the platformio toolset for esp32 development. It has an integrated debugger that can be used with this board using the JTAG port. See my esp32JTAGActivator project on github to activate this option on the ESP32.
+
